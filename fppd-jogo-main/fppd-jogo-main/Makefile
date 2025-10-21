@@ -1,6 +1,8 @@
 .PHONY: all build
 
 all: build
+	go build client.go
+	go build server.go
 
 go.mod:
 	go mod init jogo
@@ -11,6 +13,8 @@ build: go.mod
 	
 clean:
 	rm -f jogo
+	rm -f client server *.exe
 
 distclean: clean
 	rm -f go.mod go.sum
+	

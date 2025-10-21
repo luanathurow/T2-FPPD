@@ -4,31 +4,32 @@ package main
 import "os"
 
 func main() {
-	// Inicializa a interface (termbox)
 	interfaceIniciar()
 	defer interfaceFinalizar()
 
-	// Usa "mapa.txt" como arquivo padrão ou lê o primeiro argumento
+	// === NOVO: Conexão RPC ===
+	conectarServidor("Luana") // nome do jogador
+	go sincronizarEstado()    // atualiza outros jogadores periodicamente
+
 	mapaFile := "mapa.txt"
 	if len(os.Args) > 1 {
 		mapaFile = os.Args[1]
 	}
 
-	// Inicializa o jogo
 	jogo := jogoNovo()
 	if err := jogoCarregarMapa(mapaFile, &jogo); err != nil {
 		panic(err)
 	}
 
-	// Desenha o estado inicial do jogo
 	interfaceDesenharJogo(&jogo)
 
-	// Loop principal de entrada
 	for {
 		evento := interfaceLerEventoTeclado()
 		if continuar := personagemExecutarAcao(evento, &jogo); !continuar {
 			break
 		}
+		// === NOVO: envia posição atual ao servidor ===
+		enviarEstado(jogo.PosX, jogo.PosY)
 		interfaceDesenharJogo(&jogo)
 	}
 }
