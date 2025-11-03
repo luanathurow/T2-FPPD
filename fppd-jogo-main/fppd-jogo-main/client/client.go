@@ -21,7 +21,7 @@ func conectarServidor(nome string) {
 		log.Fatal("Erro ao conectar ao servidor:", err)
 	}
 	rpcClient = client
-	fmt.Println("✅ Conectado ao servidor RPC!")
+	fmt.Println("Conectado ao servidor RPC!")
 
 	var player shared.PlayerState
 	err = rpcClient.Call("GameService.RegisterPlayer", &nome, &player)
@@ -45,7 +45,7 @@ func enviarEstado(posX, posY int) {
 		if err == nil {
 			break
 		}
-		fmt.Println("⚠️ Falha ao enviar estado, tentando novamente...")
+		fmt.Println("Falha ao enviar estado, tentando novamente...")
 		time.Sleep(500 * time.Millisecond)
 	}
 }
